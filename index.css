@@ -5,6 +5,11 @@
   border: 1px solid black;
 }
 
+.nav-items {
+  display: flex;
+  align-items: center;
+}
+
 .nav-items > ul {
   list-style-type: none;
   display: flex;
@@ -23,6 +28,7 @@
   border: 1px solid black;
   margin: 10px;
   padding: 10px;
+  min-height: 400px;
 }
 
 .restaurant-card > img {
@@ -62,6 +68,9 @@
 
 .restaurant-info {
   text-align: center;
+  border: 2px solid blue;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .restaurant-menu {
@@ -71,4 +80,24 @@
   border-radius: 10px;
   border: 2px solid black;
   padding: 20px;
+}
+
+.status-tracker {
+  display: flex;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.online-status {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: rgb(72, 179, 72);
+}
+
+.offline-status {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: red;
 }
