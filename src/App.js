@@ -45,15 +45,29 @@
 
 **/
 
+/**
+  --   For Optimizing the Large Scale Applications we are using the following concepts   --
+
+ * Chunking
+ * Code Splitting
+ * Dynaminc Bundling
+ * Lazy loading
+ * On Demand Loading
+ * Dynamic Import
+ 
+**/
+
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
-import About from "./components/About";
-import ContactUs from "./components/ContactUs";
 import Error from "./components/Error";
-import Profile from "./components/ProfileClass"
+import Profile from "./components/ProfileClass";
 import RestaurantDetails from "./components/RestaurantDetails";
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import Shimmer from "./components/Shimmer";
+import { lazy, Suspense } from "react";
+const About = lazy(() => import("./components/About"));
+const ContactUs = lazy(() => import("./components/ContactUs"));
 
 const App = () => {
   return (
@@ -73,28 +87,36 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Body />
+        element: <Body />,
       },
       {
         path: "/about",
-        element: <About />,
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <About />
+          </Suspense>
+        ),
         children: [
           {
-            path : "profile",
-            element: <Profile />
-          }
-        ]
+            path: "profile",
+            element: <Profile />,
+          },
+        ],
       },
       {
         path: "/contact",
-        element: <ContactUs />
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <ContactUs />
+          </Suspense>
+        ),
       },
       {
         path: "/restaurant/:id",
-        element: <RestaurantDetails />
-      }
-    ]
-  }
+        element: <RestaurantDetails />,
+      },
+    ],
+  },
 ]);
 
 export default appRouter;
