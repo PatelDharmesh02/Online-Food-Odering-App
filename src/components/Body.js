@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import { filterData } from "../utils/helper";
 import useRestuarantsData from "../utils/useRestuarantsData";
+import useStatus from "../utils/useStatus";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
   const [restuarants, setRestuarants] = useState([]);
 
   const allRestuarants =  useRestuarantsData();
+  const isOnline = useStatus();
   
   useEffect(() => {
     setRestuarants(allRestuarants);
@@ -17,6 +19,7 @@ const Body = () => {
 
 
   return (
+    isOnline ? 
     <>
       <div className="search-bar">
         <input
@@ -59,6 +62,10 @@ const Body = () => {
           })
         )}
       </div>
+    </>
+    :
+    <>
+      <h1 style={{fontFamily: "cursive", fontWeight: "bolder", "fontSize": "20px"}}>You are Offline🥲. Please Check Your Internet Connection🛜!!</h1>
     </>
   );
 };
