@@ -3,26 +3,11 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IMG_CDN_URL } from "../constants";
 import Shimmer from "./Shimmer";
+import useRestuarantDetails from "../utils/useRestuarantDetails";
 
 const RestaurantDetails = () => {
   const { id } = useParams();
-  const [restaurantInfo, setRestaurantInfo] = useState(null);
-  const [restaurantMenu, setRestaurantMenu] = useState(null);
-
-  useEffect(() => {
-    getRestuarantInfo();
-  }, []);
-
-  const getRestuarantInfo = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9715987&lng=77.5945627&restaurantId="+id+"&catalog_qa=undefined&submitAction=ENTER"
-    );
-    const json = await data.json();
-    setRestaurantInfo(json.data.cards[0].card.card.info);
-    setRestaurantMenu(
-      json.data.cards[2].groupedCard.cardGroupMap.REGULAR.cards
-    );
-  };
+  const [restaurantInfo, restaurantMenu] = useRestuarantDetails(id);
 
 
   return restaurantInfo ? (
@@ -37,9 +22,9 @@ const RestaurantDetails = () => {
         <h3>{restaurantInfo?.city} </h3>
         <h3>{restaurantInfo?.avgRating} Stars</h3>
         <h3>{restaurantInfo?.costForTwoMessage}</h3>
-        <h3>Restaurant Menu:</h3>
       </div>
       <hr/>
+        <h2>Restaurant Menu:</h2>
       <div className="restaurant-menu">
         {restaurantMenu
           .filter((item) => item.card.card.title !== undefined)

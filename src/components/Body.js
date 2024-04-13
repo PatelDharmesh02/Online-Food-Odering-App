@@ -1,29 +1,20 @@
 import RestaurantCard from "./RestuarantCard";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { restaurants } from "../constants";
 import Shimmer from "./Shimmer";
+import { filterData } from "../utils/helper";
+import useRestuarantsData from "../utils/useRestuarantsData";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
-  const [allRestuarants, setAllRestuarants] = useState([]);
-  const [filteredRestuarants, setFilteredRestuarants] = useState([]);
+  const [restuarants, setRestuarants] = useState([]);
 
+  const allRestuarants =  useRestuarantsData();
+  
   useEffect(() => {
-    getRestaurants();
-  }, []);
+    setRestuarants(allRestuarants);
+  }, [allRestuarants])
 
-  async function getRestaurants() {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
-    const json = await data.json();
-    const restros =
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants;
-    setAllRestuarants(restros);
-    setFilteredRestuarants(restros);
-  }
 
   return (
     <>
@@ -35,37 +26,32 @@ const Body = () => {
           value={searchText}
           onChange={(e) => {
             setSearchText((prev) => (prev = e.target.value));
-            if (e.target.value === "") setFilteredRestuarants(allRestuarants);
-
-            // const filterData = allRestuarants?.filter((resto) =>
-            //   resto.info.name.toLowerCase().includes(e.target.value.toLowerCase())
-            // );
-            // setFilteredRestuarants((prev) => (prev = filterData));
+            if(e.target.value === "") {
+              setRestuarants(allRestuarants);
+            }
           }}
         />
         <button
           className="search-btn"
           onClick={() => {
-            const filterData = allRestuarants?.filter((resto) =>
-              resto.info.name.toLowerCase().includes(searchText.toLowerCase())
-            );
-
-            setFilteredRestuarants((prev) => (prev = filterData));
+            const filteredData = filterData(searchText, allRestuarants);
+            setRestuarants(filteredData);
           }}
         >
           Search
         </button>
       </div>
       <div className="restaurants">
-        {filteredRestuarants.length === 0 ? (
+        {restuarants?.length === 0 ? (
           <Shimmer />
         ) : (
-          filteredRestuarants?.map((restaurant) => {
+          restuarants?.map((restaurant) => {
             return (
               <Link
                 className="restuarant-card-link"
                 to={"/restaurant/" + restaurant.info.id}
                 key={restaurant.info.id}
+                style={{ textDecoration: "none", fontFamily: "cursive" }}
               >
                 <RestaurantCard {...restaurant.info} />
               </Link>
