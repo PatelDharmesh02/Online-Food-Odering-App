@@ -1,6 +1,7 @@
 import { Component } from "react";
+import { Link } from "react-router-dom";
 
-class Profile extends Component {
+class ProfileClass extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,9 +20,12 @@ class Profile extends Component {
             });
           }}
         >Click</button>
+        <Link to={"/"}>
+        <button>Home</button>
+        </Link>
       </div>
     );
   }
 }
 
-export default Profile;
+export default ProfileClass;
