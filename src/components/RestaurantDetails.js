@@ -26,7 +26,7 @@ const RestaurantDetails = () => {
       </div>
       <div className="flex gap-10 flex-wrap">
         {restaurantMenu
-          ?.filter((item) => item.card.card.title !== undefined)
+          ?.filter((item) => item?.card?.card?.title !== undefined)
           .map((menu, index) => {
             const title = menu?.card?.card?.title;
             const items = menu?.card?.card?.itemCards;
