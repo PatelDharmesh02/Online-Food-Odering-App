@@ -14,10 +14,10 @@ const useRestuarantDetails = (id) => {
         id +
         "&catalog_qa=undefined&submitAction=ENTER"
     );
-    const json = await data.json();
-    setRestaurantInfo(json.data.cards[2].card.card.info);
+    const json = await data?.json();
+    setRestaurantInfo(json?.data?.cards?.[2]?.card?.card?.info);
     setRestaurantMenu(
-      json.data.cards[4].groupedCard.cardGroupMap.REGULAR.cards
+      json?.data?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards
     );
   };
 
