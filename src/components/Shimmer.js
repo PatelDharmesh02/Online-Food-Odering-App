@@ -7,7 +7,7 @@ const Shimmer = ({ name }) => {
   switch (name) {
     case "menuPage":
       return (
-        <div className="m-4 shadow-inner bg-slate-200 w-[1487] h-[1200] rounded-md animate-pulse"></div>
+        <div className="m-4 shadow-inner bg-slate-200 grow-1 h-screen rounded-md animate-pulse"></div>
       );
       break;
     default:
