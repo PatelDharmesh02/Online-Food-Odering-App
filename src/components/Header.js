@@ -1,17 +1,13 @@
 import { Link } from "react-router-dom";
 import useStatus from "../utils/useStatus";
-import logo from "../assets/Platter.png"
-
+import logo from "../assets/Platter.png";
+import AccountLogo from "../assets/AccountIcon.png";
 
 const Title = () => {
   return (
     <Link to="/">
       <div className="flex items-center p-2 gap-2 justify-center">
-        <img
-          className="w-14 h-14 md:w-24 md:h-24"
-          alt="logo"
-          src={logo}
-        />
+        <img className="w-14 h-14 md:w-24 md:h-24" alt="logo" src={logo} />
         <p className="font-light text-2xl md:text-4xl font-serif">Platter</p>
       </div>
     </Link>
@@ -45,6 +41,10 @@ const Header = () => {
           </li>
           <li className="p-1 md:p-2 bg-slate-100 rounded-full">Cart</li>
         </ul>
+      </div>
+      <div className="flex items-center justify-center">
+        <img src={AccountLogo} className="w-8 h-8"/>
+        <span className="font-bold text-sm p-1 md:p-2 text-wrap">{"user"}</span>
       </div>
     </div>
   );
