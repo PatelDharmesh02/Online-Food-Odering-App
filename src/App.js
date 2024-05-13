@@ -64,18 +64,21 @@ import Error from "./components/Error";
 import Profile from "./components/ProfileClass";
 import RestaurantDetails from "./components/RestaurantDetails";
 import { createBrowserRouter, Outlet } from "react-router-dom";
+import { Provider } from "react-redux";
 import Shimmer from "./components/Shimmer";
 import { lazy, Suspense } from "react";
+import store from "./redux/store";
+import Cart from "./components/Cart";
 const About = lazy(() => import("./components/About"));
 const ContactUs = lazy(() => import("./components/ContactUs"));
 
 const App = () => {
   return (
-    <>
+    <Provider store={store}>
       <Header />
       <Outlet />
       <Footer />
-    </>
+    </Provider>
   );
 };
 
@@ -114,6 +117,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/restaurant/:id",
         element: <RestaurantDetails />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />
       },
     ],
   },
