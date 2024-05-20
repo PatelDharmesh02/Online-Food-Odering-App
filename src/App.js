@@ -76,7 +76,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <Header />
-      <Outlet />
+      <div className="min-h-screen">
+        <Outlet />
+      </div>
       <Footer />
     </Provider>
   );
@@ -120,7 +122,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Cart />
+        element: <Cart />,
       },
     ],
   },
