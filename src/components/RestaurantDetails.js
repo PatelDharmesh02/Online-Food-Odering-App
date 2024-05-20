@@ -15,8 +15,8 @@ const RestaurantDetails = () => {
   items.forEach((item) => cartItems.set(item.id, item.count));
 
   return restaurantInfo ? (
-    <div className="md:flex bg-slate-200 p-6 m-4 rounded-md gap-20 shadow-inner">
-      <div className="mb-6 md:mb-0 flex flex-col items-center gap-5 min-w-80">
+    <div className="md:flex ml-2 p-3 mt-4 rounded-md gap-16 md:max-h-screen md:overflow-hidden">
+      <div className="mb-6 md:mb-0 flex flex-col items-center gap-6 min-w-80">
         <h1 className="font-bold text-2xl">{restaurantInfo?.name}</h1>
         <img
           className="w-80 h-80 rounded-md"
@@ -24,12 +24,21 @@ const RestaurantDetails = () => {
         />
         <h3 className="font-bold text-md">{restaurantInfo?.areaName} </h3>
         <h3 className="font-bold text-md">{restaurantInfo?.city} </h3>
+        <ul className="flex gap-2 flex-wrap font-bold text-md">
+          Cuisines:{
+            restaurantInfo?.cuisines?.map((cuisine, index) => (
+              <li key={index}>
+                {cuisine}
+              </li>
+            ))
+          }
+        </ul>
         <h3 className="font-bold text-md">{restaurantInfo?.avgRating} Stars</h3>
         <h3 className="font-bold text-md">
           {restaurantInfo?.costForTwoMessage}
         </h3>
       </div>
-      <div className="grow">
+      <div className="md:grow md:overflow-y-auto hideScrollbar">
         {restaurantMenu
           ?.filter((item) => item?.card?.card?.title !== undefined)
           .map((menu, index) => {
@@ -50,18 +59,17 @@ const RestaurantDetails = () => {
                       )
                       .map((item, idx) => {
                         let { id } = item.card?.info;
+                        let count = 0;
                         if (cartItems.has(id)) {
-                          return (
-                            <RestaurantItemCard
-                              key={idx}
-                              {...item.card?.info}
-                              count={cartItems.get(id)}
-                              alreadyAdded={cartItems.has(id)}
-                            />
-                          );
+                          count = cartItems.get(id);
                         }
                         return (
-                          <RestaurantItemCard key={idx} {...item.card?.info} />
+                          <RestaurantItemCard
+                            key={idx}
+                            {...item.card?.info}
+                            count={count}
+                            alreadyAdded={cartItems.has(id)}
+                          />
                         );
                       })}
                   </div>

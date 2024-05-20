@@ -12,7 +12,8 @@ const cartSlice = createSlice({
       state.totalPrice += action.payload?.price;
     },
     removeItem: (state, action) => {
-      state.items = state.items.filter((item) => item?.id !== action.payload);
+      let updatedItems = state.items.filter((item) => item?.id !== action.payload);
+      state.items = [...updatedItems];
       let updatedPrice = 0;
       state.items.forEach((item) => updatedPrice += item?.price * item.count)
       state.totalPrice = updatedPrice;
