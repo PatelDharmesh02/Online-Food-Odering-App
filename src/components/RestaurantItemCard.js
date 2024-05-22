@@ -46,7 +46,7 @@ const RestaurantItemCard = (props) => {
   }, [alreadyAdded, count, ]);
 
   return (
-    <div className={`flex justify-between gap-3 items-center p-1 px-2 mb-3 mt-1 bg-white rounded-lg shadow-md ${props?.style || ""}`}>
+    <div className={`flex justify-between gap-3 items-center p-1 px-2 mt-1 bg-white rounded-lg shadow-md ${props?.style || "mb-3"}`}>
       <img src={IMG_CDN_URL + imageId} className="min-w-28 max-w-28 h-24" />
       <p className="text-base font-bold">
         {name} ₹ {itemPrice}/-
