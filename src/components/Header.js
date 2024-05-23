@@ -3,6 +3,9 @@ import useStatus from "../utils/useStatus";
 import logo from "../assets/Platter.png";
 import AccountLogo from "../assets/AccountIcon.png";
 import { useSelector } from "react-redux";
+import { Drawer, TextField } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
 
 const Title = () => {
   return (
@@ -16,8 +19,18 @@ const Title = () => {
 };
 
 const Header = () => {
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [login, setLogin] = useState(true);
   const isOnline = useStatus();
   const items = useSelector((store) => store.cart.items);
+  const toggleDrawer = () => {
+    setOpenDrawer(!openDrawer);
+  };
+  const handleLogin = () => {
+    if (login) {
+    } else {
+    }
+  };
   return (
     <div className="md:flex justify-between pl-3 pr-3 shadow-lg bg-white rounded-lg sticky top-0 right-0 left-0  z-10">
       <Title />
@@ -46,8 +59,94 @@ const Header = () => {
         </ul>
       </div>
       <div className="flex items-center justify-center">
-        <img src={AccountLogo} className="w-8 h-8" />
-        <span className="font-bold text-sm p-1 md:p-2 text-wrap">{"user"}</span>
+        <span
+          className="font-bold text-sm p-1 md:p-2 text-wrap cursor-pointer"
+          onClick={() => toggleDrawer()}
+        >
+          Login/SignUp
+        </span>
+        <Drawer
+          open={openDrawer}
+          anchor="right"
+          PaperProps={{
+            sx: {
+              width: { xs: "100%", sm: "50%", md: "40%", lg: "30%" },
+            },
+          }}
+        >
+          <div>
+            <div className="p-2 m-2 flex flex-col gap-10">
+              <CloseIcon
+                sx={{ cursor: "pointer" }}
+                onClick={() => toggleDrawer()}
+              />
+              <div>
+                {login ? (
+                  <>
+                    <h1 className="text-2xl font-bold">Login</h1>
+                    <p>
+                      <span className="font-semibold">Or </span>
+                      <span
+                        className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
+                        onClick={() => setLogin(!login)}
+                      >
+                        create an account
+                      </span>
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <h1 className="text-2xl font-bold">Sign up</h1>
+                    <p>
+                      <span className="font-semibold">Or </span>
+                      <span
+                        className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
+                        onClick={() => setLogin(!login)}
+                      >
+                        login to your account
+                      </span>
+                    </p>
+                  </>
+                )}
+              </div>
+              <div className="">
+                <div className="flex flex-col gap-5">
+                  <TextField
+                    id="phoneNumber"
+                    label="Phone Number"
+                    type="text"
+                    autoFocus
+                    sx={{ width: "80%" }}
+                  />
+                  {!login && (
+                    <>
+                      <TextField
+                        id="name"
+                        label="Name"
+                        type="text"
+                        sx={{ width: "80%" }}
+                      />
+                      <TextField
+                        id="email"
+                        label="Email"
+                        type="email"
+                        sx={{ width: "80%" }}
+                      />
+                    </>
+                  )}
+                </div>
+                <div>
+                  <button
+                    className="w-4/5 h-14 mt-5 bg-red-500 hover:shadow-lg rounded-md active:bg-red-600 text-white font-semibold text-base"
+                    onClick={() => handleLogin()}
+                  >
+                    CONTINUE
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Drawer>
       </div>
     </div>
   );
