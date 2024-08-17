@@ -43,16 +43,21 @@ const RestaurantItemCard = (props) => {
       setAdded(true);
       setItemCount(count);
     }
-  }, [alreadyAdded, count, ]);
+  }, [alreadyAdded, count]);
 
   return (
-    <div className={`flex justify-between gap-3 items-center p-1 px-2 mt-1 bg-white rounded-lg shadow-md ${props?.style || "mb-3"}`}>
+    <div
+      data-testid="item-card"
+      className={`flex justify-between gap-3 items-center p-1 px-2 mt-1 bg-white rounded-lg shadow-md ${
+        props?.style || "mb-3"
+      }`}
+    >
       <img src={IMG_CDN_URL + imageId} className="min-w-28 max-w-28 h-24" />
       <p className="text-base font-bold">
         {name} ₹ {itemPrice}/-
       </p>
       <div>
-        {added || alreadyAdded ?(
+        {added || alreadyAdded ? (
           <div className="flex items-center justify-center gap-0.5">
             <button
               className="bg-red-500 p-1 md:p-2 w-7 h-7 rounded-md font-medium text-white flex justify-center items-center"
@@ -72,6 +77,7 @@ const RestaurantItemCard = (props) => {
           </div>
         ) : (
           <button
+            data-testid="add-to-cart-btn"
             className="bg-red-500 md:p-2 rounded-full md:font-medium text-white text-xs md:text-sm min-w-20 text-nowrap"
             onClick={() => handleAdded(props, itemPrice)}
           >

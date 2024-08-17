@@ -38,7 +38,7 @@ const RestaurantDetails = () => {
           {restaurantInfo?.costForTwoMessage}
         </h3>
       </div>
-      <div className="md:grow md:overflow-y-auto hideScrollbar">
+      <div data-testid="item-list" className="md:grow md:overflow-y-auto hideScrollbar">
         {restaurantMenu
           ?.filter((item) => item?.card?.card?.title !== undefined)
           .map((menu, index) => {

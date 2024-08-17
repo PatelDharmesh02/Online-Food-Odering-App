@@ -25,6 +25,7 @@ const Body = () => {
           <img className="w-6" src={SearchIcon} />
           <input
             id="searchBox"
+            data-testid="searchBox"
             name="searchText"
             type="text"
             className="bg-transparent focus:outline-none"
@@ -39,6 +40,7 @@ const Body = () => {
           />
         </div>
         <button
+          data-testid="search-btn"
           className="ml-2 p-2 bg-slate-100 rounded-full text-sm"
           onClick={() => {
             const filteredData = filterData(searchText, allRestuarants);
@@ -52,17 +54,19 @@ const Body = () => {
         {restuarants?.length === 0 ? (
           <Shimmer />
         ) : (
-          restuarants?.map((restaurant) => {
-            return (
-              <Link
-                className="restuarant-card-link"
-                to={"/restaurant/" + restaurant.info.id}
-                key={restaurant.info.id}
-              >
-                <RestaurantCard {...restaurant.info} />
-              </Link>
-            );
-          })
+          <div data-testid="res-list" className="flex flex-wrap gap-5 justify-center">
+            {restuarants?.map((restaurant) => {
+              return (
+                <Link
+                  className="restuarant-card-link"
+                  to={"/restaurant/" + restaurant.info.id}
+                  key={restaurant.info.id}
+                >
+                  <RestaurantCard {...restaurant.info} />
+                </Link>
+              );
+            })}
+          </div>
         )}
       </div>
     </>

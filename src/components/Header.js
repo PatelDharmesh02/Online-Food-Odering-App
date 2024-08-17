@@ -11,7 +11,12 @@ const Title = () => {
   return (
     <Link to="/">
       <div className="flex items-center p-2 gap-2 justify-center">
-        <img className="w-12 h-12 md:w-20 md:h-20" alt="logo" src={logo} />
+        <img
+          data-testid="logo"
+          className="w-12 h-12 md:w-20 md:h-20"
+          alt="logo"
+          src={logo}
+        />
         <p className="font-light text-2xl md:text-4xl font-serif">Platter</p>
       </div>
     </Link>
@@ -54,7 +59,9 @@ const Header = () => {
             <Link to="/contact">Contact</Link>
           </li>
           <li className="p-1 md:p-2 bg-slate-100 rounded-full">
-            <Link to="/cart">Cart - {items?.length}</Link>
+            <Link data-testid="cart" to="/cart">
+              Cart - {items?.length}
+            </Link>
           </li>
         </ul>
       </div>

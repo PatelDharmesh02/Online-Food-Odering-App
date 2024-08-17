@@ -7,12 +7,12 @@ const Shimmer = ({ name }) => {
   switch (name) {
     case "menuPage":
       return (
-        <div className="m-4 shadow-inner bg-slate-200 grow-1 h-screen rounded-md animate-pulse"></div>
+        <div data-testid="shimmer" className="m-4 shadow-inner bg-slate-200 grow-1 h-screen rounded-md animate-pulse"></div>
       );
       break;
     default:
       return (
-        <div className="flex flex-wrap gap-5 justify-center">
+        <div data-testid="shimmer" className="flex flex-wrap gap-5 justify-center">
           {array.map((arr, index) => {
             return (
               <div
