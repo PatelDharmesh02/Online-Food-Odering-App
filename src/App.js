@@ -57,6 +57,17 @@
  
 **/
 
+/**
+ * -- Different types of testings --
+ * 
+ * Manual testing --> Human manually testing the application
+ * Automated testing --> Code testing the application. Tools like selenium testing
+ * End-to-end testing --> Its covers entire user journey and test cases are large
+ * Unit Testing --> Developer core job to test the unit which they have built
+ * Integration Testing --> Testing the integration between components
+ * 
+ */
+
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
