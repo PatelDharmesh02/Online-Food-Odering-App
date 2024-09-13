@@ -5,7 +5,8 @@ import AccountLogo from "../assets/AccountIcon.png";
 import { useSelector } from "react-redux";
 import { Drawer, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { ValidateData } from "../utils/validate";
 
 const Title = () => {
   return (
@@ -28,13 +29,18 @@ const Header = () => {
   const [login, setLogin] = useState(true);
   const isOnline = useStatus();
   const items = useSelector((store) => store.cart.items);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [error, setError] = useState(null);
+
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
   };
-  const handleLogin = () => {
-    if (login) {
-    } else {
-    }
+  const handleSubmit = () => {
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const message = ValidateData(email, password);
+    setError(message);
   };
   return (
     <div className="md:flex justify-between pl-3 pr-3 shadow-lg bg-white rounded-lg sticky top-0 right-0 left-0  z-10">
@@ -116,41 +122,48 @@ const Header = () => {
                   </>
                 )}
               </div>
-              <div className="">
+              <form onSubmit={(e) => e.preventDefault()}>
                 <div className="flex flex-col gap-5">
-                  <TextField
-                    id="phoneNumber"
-                    label="Phone Number"
-                    type="text"
-                    autoFocus
-                    sx={{ width: "80%" }}
-                  />
                   {!login && (
-                    <>
-                      <TextField
-                        id="name"
-                        label="Name"
-                        type="text"
-                        sx={{ width: "80%" }}
-                      />
-                      <TextField
-                        id="email"
-                        label="Email"
-                        type="email"
-                        sx={{ width: "80%" }}
-                      />
-                    </>
+                    <TextField
+                      id="fullName"
+                      label="Full Name"
+                      type="text"
+                      autoFocus
+                      autoComplete="Name"
+                      sx={{ width: "80%" }}
+                    />
                   )}
+                  <>
+                    <TextField
+                      inputRef={emailRef}
+                      id="email"
+                      label="Email"
+                      type="email"
+                      sx={{ width: "80%" }}
+                      autoFocus
+                      autoComplete="Email"
+                    />
+                    <TextField
+                      inputRef={passwordRef}
+                      id="password"
+                      label="Password"
+                      type="password"
+                      autoComplete="Password"
+                      sx={{ width: "80%" }}
+                    />
+                  </>
                 </div>
+                {error && <p className="text-red-600 text-base font-bold mt-4">{error}</p>}
                 <div>
                   <button
                     className="w-4/5 h-14 mt-5 bg-red-500 hover:shadow-lg rounded-md active:bg-red-600 text-white font-semibold text-base"
-                    onClick={() => handleLogin()}
+                    onClick={handleSubmit}
                   >
-                    CONTINUE
+                    {!login ? "Sign Up" : "Login"}
                   </button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </Drawer>
