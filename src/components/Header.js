@@ -2,11 +2,18 @@ import { Link } from "react-router-dom";
 import useStatus from "../utils/useStatus";
 import logo from "../assets/Platter.png";
 import AccountLogo from "../assets/AccountIcon.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Drawer, TextField } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useRef, useState } from "react";
 import { ValidateData } from "../utils/validate";
+import { setUser } from "../redux/userSlice";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import Profile from "./Profile";
 
 const Title = () => {
   return (
@@ -29,9 +36,11 @@ const Header = () => {
   const [login, setLogin] = useState(true);
   const isOnline = useStatus();
   const items = useSelector((store) => store.cart.items);
+  const userData = useSelector((store) => store.user.userData);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
@@ -41,6 +50,18 @@ const Header = () => {
     const password = passwordRef.current.value;
     const message = ValidateData(email, password);
     setError(message);
+    if (message) return;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((respose) => {
+        dispatch(setUser(respose.user));
+        setOpenDrawer(false);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(`${errorCode}:${errorMessage}`);
+      });
   };
   return (
     <div className="md:flex justify-between pl-3 pr-3 shadow-lg bg-white rounded-lg sticky top-0 right-0 left-0  z-10">
@@ -72,12 +93,16 @@ const Header = () => {
         </ul>
       </div>
       <div className="flex items-center justify-center">
-        <span
-          className="font-bold text-sm p-1 md:p-2 text-wrap cursor-pointer"
-          onClick={() => toggleDrawer()}
-        >
-          Login/SignUp
-        </span>
+        {userData ? (
+          <Profile />
+        ) : (
+          <span
+            className="font-bold text-sm p-1 md:p-2 text-wrap cursor-pointer"
+            onClick={() => toggleDrawer()}
+          >
+            Login/SignUp
+          </span>
+        )}
         <Drawer
           open={openDrawer}
           anchor="right"
@@ -154,7 +179,11 @@ const Header = () => {
                     />
                   </>
                 </div>
-                {error && <p className="text-red-600 text-base font-bold mt-4">{error}</p>}
+                {error && (
+                  <p className="text-red-600 text-base font-bold mt-4">
+                    {error}
+                  </p>
+                )}
                 <div>
                   <button
                     className="w-4/5 h-14 mt-5 bg-red-500 hover:shadow-lg rounded-md active:bg-red-600 text-white font-semibold text-base"

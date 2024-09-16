@@ -72,7 +72,7 @@ import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
 import Error from "./components/Error";
-import Profile from "./components/ProfileClass";
+import Profile from "./components/Profile";
 import RestaurantDetails from "./components/RestaurantDetails";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 import { Provider } from "react-redux";
