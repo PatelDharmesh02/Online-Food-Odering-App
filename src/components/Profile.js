@@ -1,29 +1,28 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Avatar, Popover } from "@mui/material";
-import AccountIcon from "../assets/AccountIcon.png";
-import { useRef, useState } from "react";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Profile = () => {
   const [open, setOpen] = useState(false);
   const userData = useSelector((store) => store.user.userData);
-  const avatarRef = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClose = () => {
-    setOpen(false);
+    setAnchorEl(null);
   };
 
   return (
     <div>
       <Avatar
-        ref={avatarRef}
         sx={{ cursor: "pointer" }}
-        src={AccountIcon}
-        onClick={() => setOpen(true)}
+        src={AccountCircleIcon}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
       />
       <Popover
         id={"profile-popover"}
-        open={open}
-        anchorEl={avatarRef}
+        open={Boolean(anchorEl)}
+        anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
