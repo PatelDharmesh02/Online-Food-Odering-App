@@ -12,6 +12,7 @@ import { auth } from "../utils/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth";
 import Profile from "./Profile";
 
@@ -39,6 +40,7 @@ const Header = () => {
   const userData = useSelector((store) => store.user.userData);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const userNameRef = useRef(null);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
@@ -52,16 +54,41 @@ const Header = () => {
     setError(message);
     if (message) return;
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((respose) => {
-        dispatch(setUser(respose.user));
-        setOpenDrawer(false);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setError(`${errorCode}:${errorMessage}`);
-      });
+    if (!login) {
+      const userName = userNameRef.current.value;
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((response) => {
+          const user = response.user;
+          updateProfile(user, {
+            displayName: userName,
+          })
+            .then((user) => {
+              dispatch(setUser(user));
+              setOpenDrawer(false);
+            })
+            .catch((profileError) => {
+              console.error("Error updating profile:", profileError.message);
+            });
+        })
+        .catch((error) => {
+          // Handle user creation errors
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setError(`${errorCode}: ${errorMessage}`);
+          console.error("Error creating user:", errorCode, errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((response) => {
+          dispatch(setUser(response.user));
+          setOpenDrawer(false);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setError(`${errorCode}:${errorMessage}`);
+        });
+    }
   };
   return (
     <div className="md:flex justify-between pl-3 pr-3 shadow-lg bg-white rounded-lg sticky top-0 right-0 left-0  z-10">
@@ -151,6 +178,7 @@ const Header = () => {
                 <div className="flex flex-col gap-5">
                   {!login && (
                     <TextField
+                      inputRef={userNameRef}
                       id="fullName"
                       label="Full Name"
                       type="text"
