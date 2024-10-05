@@ -11,7 +11,12 @@ import {
   Snackbar,
   Alert,
 } from "@mui/material";
-import { Close, Logout } from "@mui/icons-material";
+import {
+  AssignmentIndOutlined,
+  Close,
+  LocalMallOutlined,
+  Logout,
+} from "@mui/icons-material";
 import { useRef, useState, useCallback } from "react";
 import { ValidateData } from "../utils/validate";
 import { setUser } from "../redux/userSlice";
@@ -167,34 +172,25 @@ const Header = () => {
         </div>
         <ul className="flex gap-4">
           <li className="p-1 md:p-2 bg-slate-100 rounded-full">
-            <Link
-              className="font-medium text-lg flex items-center gap-1"
-              to="/"
-            >
+            <Link className="font-medium flex items-center gap-1" to="/">
               <HomeOutlined />
               <span>Home</span>
             </Link>
           </li>
           <li className="p-1 md:p-2 bg-slate-100 rounded-full">
-            <Link
-              className="font-medium text-lg flex items-center gap-1"
-              to="/about"
-            >
+            <Link className="font-medium flex items-center gap-1" to="/about">
               <EventOutlined />
               <span>About</span>
             </Link>
           </li>
           <li className="p-1 md:p-2 bg-slate-100 rounded-full">
-            <Link
-              className="font-medium text-lg flex items-center gap-1"
-              to="/contact"
-            >
+            <Link className="font-medium flex items-center gap-1" to="/contact">
               <ConnectWithoutContactOutlined /> <span>Contact</span>
             </Link>
           </li>
           <li className="p-1 md:p-2 bg-slate-100 rounded-full">
             <Link
-              className="font-medium text-lg flex items-center gap-1"
+              className="font-medium flex items-center gap-1"
               data-testid="cart"
               to="/cart"
             >
@@ -330,16 +326,24 @@ const Header = () => {
             horizontal: "left",
           }}
         >
-          <div className="p-4 min-w-48">
-            <Button
-              variant="contained"
-              color="error"
-              fullWidth
-              startIcon={<Logout />}
-              onClick={handleLogout}
-            >
-              Log Out
-            </Button>
+          <div className="p-4 min-w-40 flex justify-center gap-2 flex-col items-center">
+            <ul>
+              <li className="w-full h-9 flex gap-2 items-center hover:scale-105 font-medium cursor-pointer">
+                <AssignmentIndOutlined />
+                <span>Profile</span>
+              </li>
+              <li className="w-full h-9 flex gap-2 items-center hover:scale-105 font-medium cursor-pointer">
+                <LocalMallOutlined />
+                <span>Orders</span>
+              </li>
+              <li
+                className="w-full h-9 flex gap-2 items-center hover:scale-105 font-medium cursor-pointer text-red-600"
+                onClick={handleLogout}
+              >
+                <Logout color="red" />
+                <span>Log Out</span>
+              </li>
+            </ul>
           </div>
         </Popover>
         <Snackbar
