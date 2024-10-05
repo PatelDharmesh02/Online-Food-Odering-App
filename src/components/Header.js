@@ -2,17 +2,26 @@ import { Link } from "react-router-dom";
 import useStatus from "../utils/useStatus";
 import logo from "../assets/Platter.png";
 import { useDispatch, useSelector } from "react-redux";
-import { Drawer, TextField, Popover, Button, Avatar } from "@mui/material";
+import {
+  Drawer,
+  TextField,
+  Popover,
+  Button,
+  Avatar,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { Close, Logout } from "@mui/icons-material";
 import { useRef, useState, useCallback } from "react";
 import { ValidateData } from "../utils/validate";
-import { setUser, logoutUser } from "../redux/userSlice";
+import { setUser } from "../redux/userSlice";
 import { auth } from "../utils/firebase";
 import stringToColor from "../utils/stringToColor";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import {
   ConnectWithoutContactOutlined,
@@ -26,6 +35,8 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [login, setLogin] = useState(true);
   const [error, setError] = useState(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [alertContent, setAlertContent] = useState({});
 
   const items = useSelector((store) => store.cart.items);
   const userData = useSelector((store) => store.user.userData);
@@ -64,8 +75,15 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
     setAnchorEl(null);
+    signOut(auth).then(() => {
+      setAlertContent({
+        variant: "filled",
+        severity: "success",
+        children: "User logged out successfully!!",
+      });
+      setShowSnackbar(true);
+    });
   };
 
   const handleSubmit = () => {
@@ -87,6 +105,12 @@ const Header = () => {
               const user = auth.currentUser;
               dispatch(setUser(user));
               setOpenDrawer(false);
+              setAlertContent({
+                variant: "filled",
+                severity: "success",
+                children: "User signed in successfully!!",
+              });
+              setShowSnackbar(true);
             })
             .catch((profileError) => {
               console.error("Error updating profile:", profileError.message);
@@ -103,6 +127,12 @@ const Header = () => {
         .then((response) => {
           dispatch(setUser(response.user));
           setOpenDrawer(false);
+          setAlertContent({
+            variant: "filled",
+            severity: "success",
+            children: "User logged in successfully!!",
+          });
+          setShowSnackbar(true);
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -308,6 +338,17 @@ const Header = () => {
             </Button>
           </div>
         </Popover>
+        <Snackbar
+          open={showSnackbar}
+          autoHideDuration={2000}
+          onClose={() => setShowSnackbar(false)}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+        >
+          <Alert {...alertContent} />
+        </Snackbar>
       </div>
     </div>
   );
