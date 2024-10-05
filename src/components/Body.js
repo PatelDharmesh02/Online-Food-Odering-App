@@ -6,6 +6,10 @@ import { filterData } from "../utils/helper";
 import useRestuarantsData from "../utils/useRestuarantsData";
 import useStatus from "../utils/useStatus";
 import SearchIcon from "../assets/SearchIcon.png";
+import { onAuthStateChanged } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { auth } from "../utils/firebase";
+import { logoutUser, setUser } from "../redux/userSlice";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
@@ -13,10 +17,21 @@ const Body = () => {
 
   const allRestuarants = useRestuarantsData();
   const isOnline = useStatus();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setRestuarants(allRestuarants);
   }, [allRestuarants]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setUser(user));
+      } else {
+        dispatch(logoutUser());
+      }
+    });
+  }, []);
 
   return isOnline ? (
     <>
@@ -54,7 +69,10 @@ const Body = () => {
         {restuarants?.length === 0 ? (
           <Shimmer />
         ) : (
-          <div data-testid="res-list" className="flex flex-wrap gap-5 justify-center">
+          <div
+            data-testid="res-list"
+            className="flex flex-wrap gap-5 justify-center"
+          >
             {restuarants?.map((restaurant) => {
               return (
                 <Link
