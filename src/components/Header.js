@@ -49,6 +49,7 @@ const Header = () => {
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
+    setError(null);
   };
 
   const getProfilePhoto = useCallback(
@@ -245,7 +246,10 @@ const Header = () => {
                       <span className="font-semibold">Or </span>
                       <span
                         className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
-                        onClick={() => setLogin(!login)}
+                        onClick={() => {
+                          setLogin(!login);
+                          setError(null);
+                        }}
                       >
                         create an account
                       </span>
