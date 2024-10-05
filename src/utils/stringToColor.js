@@ -1,10 +1,10 @@
-export default stringToColor = (string) => {
+const stringToColor = (string) => {
   let hash = 0;
   let i;
   for (i = 0; i < string.length; i += 1) {
     hash = string.charCodeAt(i) + ((hash << 5) - hash);
   }
-  
+
   let color = "#";
 
   for (i = 0; i < 3; i += 1) {
@@ -14,3 +14,5 @@ export default stringToColor = (string) => {
 
   return color;
 };
+
+export default stringToColor;
