@@ -8,6 +8,7 @@ import { useRef, useState, useCallback } from "react";
 import { ValidateData } from "../utils/validate";
 import { setUser } from "../redux/userSlice";
 import { auth } from "../utils/firebase";
+import stringToColor from "../utils/stringToColor";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
