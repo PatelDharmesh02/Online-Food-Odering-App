@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRestaurantsDetails } from "../redux/restaurantsSlice";
+import { RESTUARANT_DETAILS_URL } from "../constants";
 
 const useRestuarantDetails = (id) => {
   const [restuarantInfo, setRestaurantInfo] = useState(null);
@@ -20,15 +21,10 @@ const useRestuarantDetails = (id) => {
   }, []);
 
   const getRestaurantDetails = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=12.9621948&lng=77.7115841&restaurantId=" +
-        id +
-        "&catalog_qa=undefined&isMenuUx4=true&submitAction=ENTER"
-    );
+    const data = await fetch(RESTUARANT_DETAILS_URL + id);
     const json = await data?.json();
-    const restroInfo = json?.data?.cards?.[2]?.card?.card?.info;
-    const restroMenu =
-      json?.data?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards;
+    const restroInfo = json?.info;
+    const restroMenu = json?.menu;
     setRestaurantInfo(restroInfo);
     setRestaurantMenu(restroMenu);
     let payload = {};

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { RESTUARANT_DATA_URL } from "../constants";
+import { RESTUARANTS_DATA_URL } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { updateRestaurantsData } from "../redux/restaurantsSlice";
 
@@ -17,10 +17,10 @@ const useRestuarantsData = () => {
   }, []);
 
   async function getRestaurants() {
-    const data = await fetch(RESTUARANT_DATA_URL);
+    const data = await fetch(RESTUARANTS_DATA_URL);
     const json = await data.json();
     const restros =
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+      json?.cards[1]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants;
     setAllRestuarants(restros);
     dispatch(updateRestaurantsData(restros));
