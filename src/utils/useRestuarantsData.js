@@ -17,11 +17,9 @@ const useRestuarantsData = () => {
   }, []);
 
   async function getRestaurants() {
-    const data = await fetch(RESTUARANTS_DATA_URL);
-    const json = await data.json();
-    const restros =
-      json?.cards[1]?.card?.card?.gridElements?.infoWithStyle
-        ?.restaurants;
+    const data = await fetch("http://localhost:5000/restaurants");
+    const restros = await data.json();
+    debugger
     setAllRestuarants(restros);
     dispatch(updateRestaurantsData(restros));
   }

@@ -77,10 +77,10 @@ const Body = () => {
               return (
                 <Link
                   className="restuarant-card-link"
-                  to={"/restaurant/" + restaurant.info.id}
-                  key={restaurant.info.id}
+                  to={"/restaurant/" + restaurant.id}
+                  key={restaurant.id}
                 >
-                  <RestaurantCard {...restaurant.info} />
+                  <RestaurantCard {...restaurant} />
                 </Link>
               );
             })}
