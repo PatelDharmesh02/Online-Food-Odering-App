@@ -17,9 +17,8 @@ const useRestuarantsData = () => {
   }, []);
 
   async function getRestaurants() {
-    const data = await fetch("http://localhost:5000/restaurants");
+    const data = await fetch(RESTUARANTS_DATA_URL);
     const restros = await data.json();
-    debugger
     setAllRestuarants(restros);
     dispatch(updateRestaurantsData(restros));
   }
