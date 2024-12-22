@@ -32,7 +32,7 @@ const RestaurantCard = ({
           precision={0.1}
           readOnly
         />
-        <p className="font-semibold text-base">{totalRatingsString}</p>
+        <p className="font-medium text-base">{totalRatingsString}</p>
       </div>
     </div>
   );

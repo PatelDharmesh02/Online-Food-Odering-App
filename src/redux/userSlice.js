@@ -4,6 +4,7 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     userData: null,
+    authDrawerState: false
   },
   reducers: {
     setUser: (state, action) => {
@@ -12,8 +13,11 @@ const userSlice = createSlice({
     logoutUser: (state) => {
       state.userData = null;
     },
+    toggleAuthDrawer: (state, action) => {
+      state.authDrawerState = action.payload || !state.authDrawerState;
+    }
   },
 });
 
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser, toggleAuthDrawer } = userSlice.actions;
 export default userSlice.reducer;

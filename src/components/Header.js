@@ -19,7 +19,7 @@ import {
 } from "@mui/icons-material";
 import { useRef, useState, useCallback } from "react";
 import { ValidateData } from "../utils/validate";
-import { setUser } from "../redux/userSlice";
+import { setUser, toggleAuthDrawer } from "../redux/userSlice";
 import { auth } from "../utils/firebase";
 import stringToColor from "../utils/stringToColor";
 import {
@@ -36,7 +36,6 @@ import {
 } from "@mui/icons-material";
 
 const Header = () => {
-  const [openDrawer, setOpenDrawer] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [login, setLogin] = useState(true);
   const [error, setError] = useState(null);
@@ -45,6 +44,8 @@ const Header = () => {
 
   const items = useSelector((store) => store.cart.items);
   const userData = useSelector((store) => store.user.userData);
+  const openDrawer = useSelector((store) => store.user.authDrawerState);
+
   const isOnline = useStatus();
   const dispatch = useDispatch();
 
@@ -52,8 +53,8 @@ const Header = () => {
   const passwordRef = useRef(null);
   const userNameRef = useRef(null);
 
-  const toggleDrawer = () => {
-    setOpenDrawer(!openDrawer);
+  const toggleDrawer = (state) => {
+    dispatch(toggleAuthDrawer(state));
     setError(null);
   };
 
@@ -110,7 +111,7 @@ const Header = () => {
             .then(() => {
               const user = auth.currentUser;
               dispatch(setUser(user));
-              setOpenDrawer(false);
+              dispatch(toggleAuthDrawer(false));
               setAlertContent({
                 variant: "filled",
                 severity: "success",
@@ -132,7 +133,7 @@ const Header = () => {
       signInWithEmailAndPassword(auth, email, password)
         .then((response) => {
           dispatch(setUser(response.user));
-          setOpenDrawer(false);
+          dispatch(toggleAuthDrawer(false));
           setAlertContent({
             variant: "filled",
             severity: "success",
@@ -214,7 +215,7 @@ const Header = () => {
         ) : (
           <span
             className="font-bold text-sm p-1 md:p-2 text-wrap cursor-pointer"
-            onClick={() => toggleDrawer()}
+            onClick={() => toggleDrawer(true)}
           >
             Login/SignUp
           </span>
@@ -232,7 +233,7 @@ const Header = () => {
             <div className="p-2 m-2 flex flex-col gap-10">
               <Close
                 sx={{ cursor: "pointer" }}
-                onClick={() => toggleDrawer()}
+                onClick={() => toggleDrawer(false)}
               />
               <div>
                 {login ? (
