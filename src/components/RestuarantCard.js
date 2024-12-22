@@ -1,7 +1,13 @@
 import { IMG_CDN_URL } from "../constants";
 import { Rating } from "@mui/material";
 
-const RestaurantCard = ({ cloudinaryImageId, name, cuisines, avgRating }) => {
+const RestaurantCard = ({
+  cloudinaryImageId,
+  name,
+  cuisines,
+  avgRating,
+  totalRatingsString,
+}) => {
   return (
     <div className="p-3 w-60 bg-slate-200 border shadow-lg hover:shadow-2xl hover:scale-105 rounded-lg min-h-[350px] flex flex-col justify-between">
       <div>
@@ -19,7 +25,15 @@ const RestaurantCard = ({ cloudinaryImageId, name, cuisines, avgRating }) => {
           <h3 className="font-medium mb-3">{cuisines?.join(", ")}</h3>
         </>
       )}
-      <Rating name="half-rating" defaultValue={avgRating} precision={0.1} />
+      <div className="flex gap-4">
+        <Rating
+          name="restuarant-rating"
+          defaultValue={avgRating}
+          precision={0.1}
+          readOnly
+        />
+        <p className="font-semibold text-base">{totalRatingsString}</p>
+      </div>
     </div>
   );
 };

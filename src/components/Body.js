@@ -58,6 +58,7 @@ const Body = () => {
           data-testid="search-btn"
           className="ml-2 p-2 bg-slate-100 rounded-full text-sm"
           onClick={() => {
+            if(!searchText || searchText.length == 0 || searchText === "")return;
             const filteredData = filterData(searchText, allRestuarants);
             setRestuarants(filteredData);
           }}
