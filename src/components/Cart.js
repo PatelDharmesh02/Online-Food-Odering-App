@@ -1,12 +1,21 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import RestaurantItemCard from "./RestaurantItemCard";
 import EmptyCartLogo from "../assets/EmptyCartIcon.png";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { toggleAuthDrawer } from "../redux/userSlice";
 
 const Cart = () => {
+  const dispatch = useDispatch();
   const items = useSelector((store) => store.cart?.items);
   const totalPrice = useSelector((store) => store.cart?.totalPrice);
+  const { userData } = useSelector((store) => store.user);
+
+  const handlePayment = () => {
+    if (!userData) {
+      dispatch(toggleAuthDrawer(true));
+      return;
+    }
+  };
 
   return items.length > 0 ? (
     <>
@@ -56,11 +65,11 @@ const Cart = () => {
         </div>
       </div>
       <div className="mt-4 flex justify-center items-center">
-            <button className="w-1/4">
-              <p className="font-semibold bg-gradient-to-r from-blue-600 via-pink-500 to-red-600 rounded-md text-white px-2 my-1">
-                Proceed to pay ₹{(totalPrice).toLocaleString("en-IN")}/-
-              </p>
-            </button>
+        <button className="w-1/4" onClick={handlePayment}>
+          <p className="font-semibold bg-gradient-to-r from-blue-600 via-pink-500 to-red-600 rounded-md text-white px-2 my-1">
+            Proceed to pay ₹{totalPrice.toLocaleString("en-IN")}/-
+          </p>
+        </button>
       </div>
     </>
   ) : (
