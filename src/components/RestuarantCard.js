@@ -1,4 +1,5 @@
 import { IMG_CDN_URL } from "../constants";
+import { Rating } from "@mui/material";
 
 const RestaurantCard = ({ cloudinaryImageId, name, cuisines, avgRating }) => {
   return (
@@ -18,7 +19,7 @@ const RestaurantCard = ({ cloudinaryImageId, name, cuisines, avgRating }) => {
           <h3 className="font-medium mb-3">{cuisines?.join(", ")}</h3>
         </>
       )}
-      <h4 className="font-bold">{avgRating} Stars</h4>
+      <Rating name="half-rating" defaultValue={avgRating} precision={0.1} />
     </div>
   );
 };
