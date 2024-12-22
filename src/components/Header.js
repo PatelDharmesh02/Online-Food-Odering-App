@@ -66,7 +66,7 @@ const Header = () => {
       const letters = (displayName || email).toUpperCase().split(" ");
       return {
         sx: {
-          bgcolor: stringToColor(displayName),
+          bgcolor: stringToColor(displayName || email),
         },
         children: (function () {
           return letters.map((letter) => letter.charAt(0));

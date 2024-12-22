@@ -1,4 +1,5 @@
 const stringToColor = (string) => {
+  if(!string || string === "")return "#808080"
   let hash = 0;
   let i;
   for (i = 0; i < string.length; i += 1) {
