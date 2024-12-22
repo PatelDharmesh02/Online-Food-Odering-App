@@ -1,0 +1,19 @@
+# Ignore node_modules directory
+node_modules
+
+# Ignore .parcel-cache directory
+.parcel-cache
+
+# Ignore dist directory
+dist
+
+# Ignore other common files and folders
+.git
+.gitignore
+.DS_Store
+.env
+.env.local
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+*.log
