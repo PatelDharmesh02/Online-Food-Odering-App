@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { IMG_CDN_URL } from "../constants";
 import Shimmer from "./Shimmer";
+import { Rating } from "@mui/material";
 import useRestuarantDetails from "../utils/useRestuarantDetails";
 import RestaurantItemCard from "./RestaurantItemCard";
 import { useSelector } from "react-redux";
@@ -24,20 +25,25 @@ const RestaurantDetails = () => {
         <h3 className="font-bold text-md">{restaurantInfo?.areaName} </h3>
         <h3 className="font-bold text-md">{restaurantInfo?.city} </h3>
         <ul className="flex gap-2 flex-wrap font-bold text-md">
-          Cuisines:{
-            restaurantInfo?.cuisines?.map((cuisine, index) => (
-              <li key={index}>
-                {cuisine}
-              </li>
-            ))
-          }
+          Cuisines:
+          {restaurantInfo?.cuisines?.map((cuisine, index) => (
+            <li key={index}>{cuisine}</li>
+          ))}
         </ul>
-        <h3 className="font-bold text-md">{restaurantInfo?.avgRating} Stars</h3>
-        <h3 className="font-bold text-md">
-          {restaurantInfo?.costForTwoMessage}
-        </h3>
+        <Rating
+          name="restuarant-rating"
+          defaultValue={restaurantInfo?.avgRating}
+          precision={0.1}
+          readOnly
+        />
+        <p className="font-semibold text-base">
+          {restaurantInfo?.totalRatingsString}
+        </p>
       </div>
-      <div data-testid="item-list" className="md:grow md:overflow-y-auto hideScrollbar">
+      <div
+        data-testid="item-list"
+        className="md:grow md:overflow-y-auto hideScrollbar"
+      >
         {restaurantMenu
           ?.filter((item) => item?.card?.card?.title !== undefined)
           .map((menu, index) => {
