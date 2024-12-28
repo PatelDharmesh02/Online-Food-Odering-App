@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateRestaurantsDetails } from "../redux/restaurantsSlice";
-import { RESTUARANT_DETAILS_URL } from "../constants";
 
 const useRestuarantDetails = (id) => {
   const [restuarantInfo, setRestaurantInfo] = useState(null);
@@ -21,7 +20,7 @@ const useRestuarantDetails = (id) => {
   }, []);
 
   const getRestaurantDetails = async () => {
-    const data = await fetch(RESTUARANT_DETAILS_URL + id);
+    const data = await fetch(process.env.REACT_APP_RESTUARANT_DETAILS_URL + id);
     const json = await data?.json();
     const restroInfo = json?.info;
     const restroMenu = json?.menu;

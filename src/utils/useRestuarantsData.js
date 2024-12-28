@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { RESTUARANTS_DATA_URL } from "../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { updateRestaurantsData } from "../redux/restaurantsSlice";
 
@@ -17,7 +16,7 @@ const useRestuarantsData = () => {
   }, []);
 
   async function getRestaurants() {
-    const data = await fetch(RESTUARANTS_DATA_URL);
+    const data = await fetch(process.env.REACT_APP_RESTUARANTS_DATA_URL);
     const restros = await data.json();
     setAllRestuarants(restros);
     dispatch(updateRestaurantsData(restros));
