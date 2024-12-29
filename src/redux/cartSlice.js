@@ -20,6 +20,7 @@ const cartSlice = createSlice({
     },
     clearCart: (state) => {
       state.items = [];
+      state.totalPrice = 0;
     },
     manageItemCount: (state, action) => {
       state.items.filter(item => item.id === action.payload?.id).forEach(item => item.count = action.payload?.count);

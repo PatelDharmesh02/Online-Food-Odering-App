@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 
 const useRestuarantDetails = (id) => {
@@ -6,12 +7,11 @@ const useRestuarantDetails = (id) => {
 
   useEffect(() => {
     const getRestaurantDetails = async () => {
-      const data = await fetch(
+      const { data } = await axios.get(
         process.env.REACT_APP_RESTUARANT_DETAILS_URL + id
       );
-      const json = await data?.json();
-      const restroInfo = json?.info;
-      const restroMenu = json?.menu;
+      const restroInfo = data?.info;
+      const restroMenu = data?.menu;
       setRestaurantInfo(restroInfo);
       setRestaurantMenu(restroMenu);
     };

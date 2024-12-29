@@ -4,7 +4,8 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     userData: null,
-    authDrawerState: false
+    authDrawerState: false,
+    selectedAddress: {},
   },
   reducers: {
     setUser: (state, action) => {
@@ -15,9 +16,13 @@ const userSlice = createSlice({
     },
     toggleAuthDrawer: (state, action) => {
       state.authDrawerState = action.payload || !state.authDrawerState;
-    }
+    },
+    setSelectedAddress: (state, action) => {
+      state.selectedAddress = action.payload;
+    },
   },
 });
 
-export const { setUser, logoutUser, toggleAuthDrawer } = userSlice.actions;
+export const { setUser, logoutUser, toggleAuthDrawer, setSelectedAddress } =
+  userSlice.actions;
 export default userSlice.reducer;

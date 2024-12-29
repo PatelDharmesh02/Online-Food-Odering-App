@@ -1,21 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const restaurantsSlice = createSlice({
-    name: "restaurants",
-    initialState: {
-        restaurantsData: [],
-        restaurantsDetails: {}
+  name: "restaurants",
+  initialState: {
+    loader: true,
+  },
+  reducers: {
+    setLoaderState: (state, action) => {
+      state.loader = action.payload;
     },
-    reducers: {
-        updateRestaurantsData: (state, action) => {
-            state.restaurantsData = action.payload;
-        },
-        updateRestaurantsDetails: (state, action) => {
-            state.restaurantsDetails = action.payload;
-        }
-    }
+  },
 });
 
-export const { updateRestaurantsData, updateRestaurantsDetails } = restaurantsSlice.actions;
+export const { setLoaderState } = restaurantsSlice.actions;
 
 export default restaurantsSlice.reducer;
