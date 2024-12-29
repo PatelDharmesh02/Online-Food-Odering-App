@@ -165,7 +165,6 @@ const Profile = () => {
           },
         }}
       >
-        <div>
           <div className="p-2 m-2 flex flex-col gap-10">
             <Close
               sx={{ cursor: "pointer" }}
@@ -249,7 +248,6 @@ const Profile = () => {
               </div>
             </form>
           </div>
-        </div>
       </Drawer>
       <Popover
         id={"profile-popover"}
@@ -258,6 +256,10 @@ const Profile = () => {
         onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
           horizontal: "left",
         }}
       >

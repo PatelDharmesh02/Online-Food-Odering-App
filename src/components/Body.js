@@ -7,13 +7,14 @@ import useRestuarantsData from "../utils/useRestuarantsData";
 import useStatus from "../utils/useStatus";
 import SearchIcon from "../assets/SearchIcon.png";
 import { onAuthStateChanged } from "firebase/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../utils/firebase";
 import { logoutUser, setUser } from "../redux/userSlice";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
   const [restuarants, setRestuarants] = useState([]);
+  const loader = useSelector((state) => state.restaurants.loader);
 
   const allRestuarants = useRestuarantsData();
   const isOnline = useStatus();
@@ -58,7 +59,8 @@ const Body = () => {
           data-testid="search-btn"
           className="ml-2 p-2 bg-slate-100 rounded-full text-sm"
           onClick={() => {
-            if(!searchText || searchText.length == 0 || searchText === "")return;
+            if (!searchText || searchText.length == 0 || searchText === "")
+              return;
             const filteredData = filterData(searchText, allRestuarants);
             setRestuarants(filteredData);
           }}
@@ -67,7 +69,7 @@ const Body = () => {
         </button>
       </div>
       <div className="flex flex-wrap gap-5 justify-center">
-        {restuarants?.length === 0 ? (
+        {loader || restuarants?.length === 0 ? (
           <Shimmer />
         ) : (
           <div

@@ -9,13 +9,14 @@ import {
   ShoppingCartOutlined,
 } from "@mui/icons-material";
 import Profile from "./Profile";
+import AddressBar from "./AddressBar";
 
 const Header = () => {
   const items = useSelector((store) => store.cart.items);
   const isOnline = useStatus();
-  
+
   return (
-    <div className="md:flex justify-between pl-3 pr-3 shadow-lg bg-white rounded-lg sticky top-0 right-0 left-0  z-10">
+    <div className="md:flex justify-center items-center gap-4 pl-3 pr-3 shadow-lg bg-white rounded-lg sticky top-0 right-0 left-0  z-10">
       <Link to="/">
         <div className="flex items-center p-2 gap-2 justify-center">
           <img
@@ -27,7 +28,8 @@ const Header = () => {
           <p className="font-light text-2xl md:text-4xl font-serif">Platter</p>
         </div>
       </Link>
-      <div className="flex justify-between items-center gap-4 pb-2 md:pb-0">
+      <AddressBar />
+      <div className="flex items-center gap-4 pb-2 md:pb-0">
         <div className="text-sm md:text-normal flex gap:1 md:gap-2 items-center bg-yellow-100 p-1 md:p-2 rounded-full">
           Status:
           {isOnline ? (
@@ -65,8 +67,8 @@ const Header = () => {
             </Link>
           </li>
         </ul>
+        <Profile />
       </div>
-      <Profile />
     </div>
   );
 };
