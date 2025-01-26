@@ -7,16 +7,21 @@ import {
   Avatar,
   Snackbar,
   Alert,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import {
   AssignmentIndOutlined,
   Close,
   LocalMallOutlined,
   Logout,
+  Visibility,
+  VisibilityOff,
 } from "@mui/icons-material";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   updateProfile,
   signOut,
 } from "firebase/auth";
@@ -25,13 +30,13 @@ import { setUser, toggleAuthDrawer } from "../redux/userSlice";
 import { auth } from "../utils/firebase";
 import stringToColor from "../utils/stringToColor";
 
-
 const Profile = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [login, setLogin] = useState(true);
   const [error, setError] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [alertContent, setAlertContent] = useState({});
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const userData = useSelector((store) => store.user.userData);
   const openDrawer = useSelector((store) => store.user.authDrawerState);
   const dispatch = useDispatch();
@@ -83,11 +88,11 @@ const Profile = () => {
   const handleSubmit = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const message = ValidateData(email, password);
-    setError(message);
-    if (message) return;
 
     if (!login) {
+      const message = ValidateData(email, password);
+      setError(message);
+      if (message) return;
       const userName = userNameRef.current.value;
       createUserWithEmailAndPassword(auth, email, password)
         .then((response) => {
@@ -130,8 +135,7 @@ const Profile = () => {
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
-          setError(`${errorCode}:${errorMessage}`);
+          setError(`${errorCode}:Invalid Email or Password`);
         });
     }
   };
@@ -165,89 +169,111 @@ const Profile = () => {
           },
         }}
       >
-          <div className="p-2 m-2 flex flex-col gap-10">
-            <Close
-              sx={{ cursor: "pointer" }}
-              onClick={() => toggleDrawer(false)}
-            />
-            <div>
-              {login ? (
-                <>
-                  <h1 className="text-2xl font-bold">Login</h1>
-                  <p>
-                    <span className="font-semibold">Or </span>
-                    <span
-                      className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
-                      onClick={() => {
-                        setLogin(!login);
-                        setError(null);
-                      }}
-                    >
-                      create an account
-                    </span>
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h1 className="text-2xl font-bold">Sign up</h1>
-                  <p>
-                    <span className="font-semibold">Or </span>
-                    <span
-                      className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
-                      onClick={() => setLogin(!login)}
-                    >
-                      login to your account
-                    </span>
-                  </p>
-                </>
-              )}
-            </div>
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="flex flex-col gap-5">
-                {!login && (
-                  <TextField
-                    inputRef={userNameRef}
-                    id="fullName"
-                    label="Full Name"
-                    type="text"
-                    autoFocus
-                    autoComplete="Name"
-                    sx={{ width: "80%" }}
-                  />
-                )}
-                <>
-                  <TextField
-                    inputRef={emailRef}
-                    id="email"
-                    label="Email"
-                    type="email"
-                    sx={{ width: "80%" }}
-                    autoFocus
-                    autoComplete="Email"
-                  />
-                  <TextField
-                    inputRef={passwordRef}
-                    id="password"
-                    label="Password"
-                    type="password"
-                    autoComplete="Password"
-                    sx={{ width: "80%" }}
-                  />
-                </>
-              </div>
-              {error && (
-                <p className="text-red-600 text-base font-bold mt-4">{error}</p>
-              )}
-              <div>
-                <button
-                  className="w-4/5 h-14 mt-5 bg-red-500 hover:shadow-lg rounded-md active:bg-red-600 text-white font-semibold text-base"
-                  onClick={handleSubmit}
-                >
-                  {!login ? "Sign Up" : "Login"}
-                </button>
-              </div>
-            </form>
+        <div className="p-2 m-2 flex flex-col gap-10">
+          <Close
+            sx={{ cursor: "pointer" }}
+            onClick={() => toggleDrawer(false)}
+          />
+          <div>
+            {login ? (
+              <>
+                <h1 className="text-2xl font-bold">Login</h1>
+                <p>
+                  <span className="font-semibold">Or </span>
+                  <span
+                    className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
+                    onClick={() => {
+                      setLogin(!login);
+                      setError(null);
+                    }}
+                  >
+                    create an account
+                  </span>
+                </p>
+              </>
+            ) : (
+              <>
+                <h1 className="text-2xl font-bold">Sign up</h1>
+                <p>
+                  <span className="font-semibold">Or </span>
+                  <span
+                    className="text-red-600 text-sm font-semibold hover:underline cursor-pointer"
+                    onClick={() => setLogin(!login)}
+                  >
+                    login to your account
+                  </span>
+                </p>
+              </>
+            )}
           </div>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className="flex flex-col gap-5">
+              {!login && (
+                <TextField
+                  inputRef={userNameRef}
+                  id="fullName"
+                  label="Full Name"
+                  type="text"
+                  autoFocus
+                  autoComplete="Name"
+                  sx={{ width: "80%" }}
+                />
+              )}
+              <>
+                <TextField
+                  inputRef={emailRef}
+                  id="email"
+                  label="Email"
+                  type="email"
+                  sx={{ width: "80%" }}
+                  autoFocus
+                  autoComplete="Email"
+                />
+                <TextField
+                  inputRef={passwordRef}
+                  id="password"
+                  label="Password"
+                  type={passwordVisible ? "text" : "password"}
+                  autoComplete="current-password"
+                  sx={{ width: "80%" }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label={
+                            passwordVisible
+                              ? "hide the password"
+                              : "display the password"
+                          }
+                          onClick={() => setPasswordVisible(!passwordVisible)}
+                          edge="end"
+                        >
+                          {passwordVisible ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </>
+            </div>
+            {error && (
+              <p className="text-red-600 text-base font-bold mt-4">{error}</p>
+            )}
+            {/* {
+              <p className="cursor-pointer font-medium text-sm underline mt-2 text-blue-600" onClick={() => {
+                sendPasswordResetEmail(auth, emailRef.current.value);
+              }}>
+                Forgot Password
+              </p>
+            } */}
+            <button
+              className="w-4/5 h-14 mt-5 bg-red-500 hover:shadow-lg rounded-md active:bg-red-600 text-white font-semibold text-base"
+              onClick={handleSubmit}
+            >
+              {!login ? "Sign Up" : "Login"}
+            </button>
+          </form>
+        </div>
       </Drawer>
       <Popover
         id={"profile-popover"}
